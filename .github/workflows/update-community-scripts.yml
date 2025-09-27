@@ -1,0 +1,133 @@
+name: Update Community Scripts
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  update-json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruamel.yaml
+
+      - name: Update community_scripts.json
+        run: |
+          import os, re, json, uuid, subprocess
+          from pathlib import Path
+
+          staging_dir = Path("scripts_staging")
+          community_file = Path("community_scripts.json")
+
+          # Load existing JSON
+          if community_file.exists():
+              with open(community_file, "r") as f:
+                  data = json.load(f)
+          else:
+              data = []
+
+          existing_files = {d["filename"] for d in data}
+
+          def parse_metadata(file_path):
+              text = file_path.read_text(errors="ignore")
+              match = re.search(r"<#[\s\S]*?TRMM Scripts Marker[\s\S]*?#>", text, re.MULTILINE)
+              if not match:
+                  return {
+                      "name": "NOTFOUND",
+                      "description": "NOTFOUND",
+                      "supported_platforms": ["NOTFOUND"],
+                      "default_timeout": "NOTFOUND"
+                  }
+
+              block = match.group(0)
+
+              def extract(pattern, default="NOTFOUND"):
+                  m = re.search(pattern, block)
+                  return m.group(1).strip() if m else default
+
+              name = extract(r"Name:\s*(.*)")
+              description = extract(r"Description:\s*(.*)")
+              platforms = re.findall(r"Platforms:\s*([\s\S]*?)Category:", block)
+              platforms = [p.strip() for p in platforms[0].split("\n") if p.strip()] if platforms else ["NOTFOUND"]
+              timeout = extract(r"Timeout:\s*(.*)", "NOTFOUND")
+
+              return {
+                  "name": name,
+                  "description": description,
+                  "supported_platforms": platforms,
+                  "default_timeout": timeout
+              }
+
+          for file_path in staging_dir.rglob("*"):
+              if file_path.is_file() and file_path.name not in existing_files:
+                  # Determine shell by extension
+                  ext = file_path.suffix.lower()
+                  if ext == ".ps1":
+                      shell = "powershell"
+                  elif ext in (".bat", ".cmd"):
+                      shell = "cmd"
+                  elif ext == ".sh":
+                      shell = "bash"
+                  else:
+                      shell = "NOTFOUND"
+
+                  # Category = top folder name or uncategorised
+                  parts = file_path.relative_to(staging_dir).parts
+                  category = parts[0] if len(parts) > 1 else "uncategorised"
+
+                  # Submitted by = first committer
+                  try:
+                      submitted = subprocess.check_output(
+                          ["git", "log", "--diff-filter=A", "--follow", "--format=%an", "--", str(file_path)],
+                          text=True
+                      ).splitlines()[-1]
+                  except Exception:
+                      submitted = "NOTFOUND"
+
+                  meta = parse_metadata(file_path)
+
+                  entry = {
+                      "guid": str(uuid.uuid4()),
+                      "filename": file_path.name,
+                      "submittedBy": submitted,
+                      "name": meta["name"],
+                      "description": meta["description"],
+                      "shell": shell,
+                      "category": category,
+                      "supported_platforms": meta["supported_platforms"],
+                      "default_timeout": meta["default_timeout"]
+                  }
+
+                  data.append(entry)
+
+          with open(community_file, "w") as f:
+              json.dump(data, f, indent=2)
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add community_scripts.json
+          git diff --cached --quiet || git commit -m "chore: update community_scripts.json"
+
+      - name: Push changes
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git push
