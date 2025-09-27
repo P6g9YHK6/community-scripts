@@ -3,10 +3,10 @@ name: Update Community Scripts
 on:
   push:
     branches:
-      - main
+      - '**'
   pull_request:
     branches:
-      - main
+      - '**'
 
 jobs:
   update-json:
@@ -134,6 +134,5 @@ jobs:
           git diff --cached --quiet || git commit -m "chore: update community_scripts.json"
 
       - name: Push changes
-        if: github.ref == 'refs/heads/main'
         run: |
           git push
