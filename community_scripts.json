@@ -1731,5 +1731,1877 @@
       "darwin"
     ],
     "category": "TRMM (All):3rd Party Software"
+  },
+  {
+    "guid": "b500e480-6e55-4450-8240-54c037831afa",
+    "filename": "Win_Defender_Enable_Exclusions.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "8c3460bb-66e2-456d-97cf-1bb991d9ab0e",
+    "filename": "linux_os_update_check.sh",
+    "submittedBy": "dinger1986",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "bash",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "b5d2f4a2-a50b-4f6f-8861-26898f8fc532",
+    "filename": "Win_HPE-SSACLI_Install.ps1",
+    "submittedBy": "ConvexSERV",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "0283db3b-186a-40cf-80c1-884ab737d4ad",
+    "filename": "Win_Driver_Restrict_PrinterInstallToAdmin.bat",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "cmd",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "be0919af-3417-45d2-9dd5-45aca3bdf1d0",
+    "filename": "Win_TLS_Checkforv1.2.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "3473b592-0b7c-4215-8a44-5703ed2d0fb5",
+    "filename": "linux_os_update.sh",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "bash",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "27238bfe-d396-46b2-9df0-82acc4f5c71d",
+    "filename": "Win_Drive_Info_Get.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "927f62a2-f1d7-4b19-b209-43bc68ecc8c2",
+    "filename": "Win_WindowsBackup_Monitor.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "54d32567-4ca8-47a3-9ce4-e087b03d60de",
+    "filename": "Win_Drive_Files_List_Biggest_Files_On_Drive.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "ef60ce0e-511f-431b-a5ea-65a9282360da",
+    "filename": "Win_Mesh_CheckForAgentProblems.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "84bbd9df-0cc7-4d65-974c-85d5480a2ce7",
+    "filename": "Win_Logon_FailsCheck.ps1",
+    "submittedBy": "Aidan-abss",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "8f822ca9-ab4d-49da-b364-ecbd27521552",
+    "filename": "linux_disk_check.sh",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "bash",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "cc306c76-da32-45bf-86c2-f25999d6cb0c",
+    "filename": "Win_Services_CheckforProblems.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "b654fb72-b9d9-484f-842e-bfe2e6c6635e",
+    "filename": "Win_Hello_World.ps1",
+    "submittedBy": "David Randall",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "fc88d25e-64e2-4b8b-9c3d-3352ae9441c3",
+    "filename": "linux_cron_monitor.sh",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "bash",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "6dbcfa36-35d1-4079-ad13-284c20cc246c",
+    "filename": "Win_Screenshot_Take.ps1",
+    "submittedBy": "dinger1986",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "3ab92d6c-1504-4074-8fa1-568a7a68906c",
+    "filename": "Win_TRMM_ChangeTempFolder.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "64b99f72-4b4c-4091-a58a-c727bc4f4637",
+    "filename": "Win_Battery_Create_Detailed_Report.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "19c43673-0a85-41cc-92bd-f58638396fa8",
+    "filename": "Win_Chrome_Check_Version.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "d6abd2aa-1acc-4de4-8052-23bd863d05fe",
+    "filename": "Win_Huntress_Deployment.ps1",
+    "submittedBy": "jcpit",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "23e4a121-74b4-44ad-8bc8-985d32b6541d",
+    "filename": "WIN_batt_health.ps1",
+    "submittedBy": "swalker234",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "6ab0192b-0506-4cf9-ab20-9c5110b7e9ea",
+    "filename": "Win_HPE-SSA_Status.py",
+    "submittedBy": "ConvexSERV",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "NOTFOUND",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "2ee2fd8f-199b-4a51-a298-76a41d585c66",
+    "filename": "linux_service_check_for_failed.sh",
+    "submittedBy": "dinger1986",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "bash",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "8f9d0475-6fbf-4dba-9395-1ca0513ccbdc",
+    "filename": "Win_ResetviaMDM.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "537ab3da-6b7e-46ed-892b-6b323fae4ee7",
+    "filename": "Win_Win10_Initial_Setup.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "d9548935-cd01-4e8f-93d9-d2ec2642b70a",
+    "filename": "linux_3cx_backupchecker.sh",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "bash",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "416486e5-df7c-4a73-92aa-5d0debbf5a0a",
+    "filename": "Win_MSOffice_Disable_SaveToOneDrive.ps1",
+    "submittedBy": "dinger1986",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "19d2e535-6f69-4cf1-9a9a-fcc11a6b984b",
+    "filename": "Win_Autoruns_Get_List.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "654f15d5-3330-4c6d-a6ad-195fa4ff9eb8",
+    "filename": "Win_User_GetIdleTime.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "0e2b1f5f-3134-4af2-9cd6-a67955147491",
+    "filename": "Win_Disk_Cleanup.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "e66df08e-325a-47ab-adc0-56c7db4833be",
+    "filename": "Win_TRMM_ScheduledTasks_List.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "e405e3ae-f8a0-431f-b8e3-c5274688d955",
+    "filename": "Win_StorageCraftImageManager_Status.ps1",
+    "submittedBy": "ConvexSERV",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "20d99b5b-561b-4c46-b610-ba90fdb62e23",
+    "filename": "Win_Chrome_Clear_All.ps1",
+    "submittedBy": "dinger1986",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "defa50c1-51c6-43dc-af1e-bd1c0f7402c4",
+    "filename": "Win_WindowsOptionalFeature_EnableDisable.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "44c3aff8-caac-4003-99bf-beb72d19c376",
+    "filename": "Win_StorageCraftSPX_Status.ps1",
+    "submittedBy": "ConvexSERV",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "093ea9ed-37e6-4fcf-8d88-e422e06571db",
+    "filename": "Win_Network_DisableEnable.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "92f22f67-a6ad-4848-9ae4-366167dd3fd3",
+    "filename": "Win_NetworkScanner.py",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "NOTFOUND",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "a9ff8ddd-5c37-40e3-a9f9-1e74d1f69903",
+    "filename": "win_outlook_disable_new_ui_toggle.ps1",
+    "submittedBy": "itdonerightnc",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "b9048088-256d-4c52-a1db-cf41e2d890b8",
+    "filename": "WIN_reliablity_score.p1",
+    "submittedBy": "dinger1986",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "NOTFOUND",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "6036faf8-dc5e-4e13-ac44-ae7432bfb8a9",
+    "filename": "Win_Template.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "43ab5c65-cf7a-45af-91c2-9948a44a36b8",
+    "filename": "Win_Blue_Screen_View.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "96fac39c-8c41-4273-b843-aba5fe46e4c2",
+    "filename": "Win_Clear_cookies.ps1",
+    "submittedBy": "dinger1986",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "e8e1f790-6faf-45d0-a636-d84cc3a1813c",
+    "filename": "Win_Defender_Enable_ApplicationGuard.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "9c349d76-2116-41dd-bf93-47b37c046d14",
+    "filename": "Win_Bitlocker_Enable.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "e06e3477-f0d7-4493-8663-b152bfed70d9",
+    "filename": "macos_fix_mesh_install.sh",
+    "submittedBy": "David Randall",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "bash",
+    "category": "uncategorised",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "4b476861-96d8-4abe-888e-771bf68426e3",
+    "filename": "\u2622\ufe0f Generate Blue screen of death.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Lab",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "8d44f799-a26b-4f3e-9bca-dd259eca5b22",
+    "filename": "Demo powershell visibility window.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Lab",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "2337cf63-7585-42bc-87e8-e2c4e81f0cc3",
+    "filename": "RustDesk install.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Lab",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "1552cfba-8b9c-4bb0-899d-394299d89011",
+    "filename": "RustDesk Get ID.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Lab",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "92688639-5123-44c1-9228-8ccc7ae81660",
+    "filename": "Fake CheckRandom Alert.py",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "NOTFOUND",
+    "category": "Lab",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "d1280478-474a-4b18-bf56-5e0e2758be07",
+    "filename": "TRMM Variable exemples.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Lab",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "ad2c1e8e-335d-4449-bd42-a174b62da44a",
+    "filename": "Send mail test.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Lab",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "f017541a-5123-49fd-82ef-b130451041b3",
+    "filename": "Fake CheckRandom Alert 2.py",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "NOTFOUND",
+    "category": "Lab",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "a9a006c6-14cb-4cc3-b685-3cb3babb3231",
+    "filename": "RustDesk password set.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Lab",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "631c34be-8d56-4363-b637-d306467b9aae",
+    "filename": "IP block lists for specified countries.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Lab",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "1fe72f67-3f5e-4816-83fe-ad74cb001820",
+    "filename": "Active Directory Health.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "78e53b10-076d-46ca-a0ac-c175449e0691",
+    "filename": "Maximum  UpTime.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "8bdbdb54-04bd-4b5f-9349-782741b9aaeb",
+    "filename": "is process running.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "824e5989-9125-43ed-9d67-e19527c4a289",
+    "filename": "AD link health.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "90d834ae-59d3-4b53-b0e7-16e2a11b2037",
+    "filename": "Activation status.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "ca35f19d-5dd2-4c1b-b2fc-697970335420",
+    "filename": "Windows Reliabilty Score.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "272e5499-c519-4519-8904-c0a4b7fe0384",
+    "filename": "SQL Health.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "2d3614eb-899e-4663-90f6-2fa1bc219f37",
+    "filename": "Swap health.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "be51889e-76cb-4d0b-a28c-7a55c60b304f",
+    "filename": "Rdcms size.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "ddb0001f-2002-4bc1-9b62-1e266c94616d",
+    "filename": "Windows Services.ps1",
+    "submittedBy": "silversword411",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "2016c830-e541-421c-9050-a3891f3cd132",
+    "filename": "Windows Update Health.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "b5c787fc-7470-41d1-bccd-f04d10e26700",
+    "filename": "Backup Veeam agent.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "8fb1575b-669a-43cf-a37b-1d34d0938743",
+    "filename": "Certificates expiry.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "31988998-ccc1-4fa5-81fd-dd641f1743d6",
+    "filename": "Is TCP port open.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "6940ae29-8ec4-4f61-ad68-73c721478db3",
+    "filename": "Internet uplink.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "97bd89e3-2c41-40b1-b7b8-08d32b733523",
+    "filename": "Task Scheduler scanner.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "a9e744ba-e461-417e-821f-1d322324c0e9",
+    "filename": "Ping monitoring.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "29a993ce-ca9b-4f39-87c5-95ff1c3774d2",
+    "filename": "Disk RW.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "9634d23b-58bd-4a98-9f58-bf2ca6c4b23b",
+    "filename": "is TCP port open.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "d6db780b-d6dd-4203-9082-1189a88afc87",
+    "filename": "Last errors logs.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "f3b3de90-e9a1-42fa-9a09-3dd4b69d8d07",
+    "filename": "Eset Status.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "24e15aaa-f15d-4d73-b5f8-67a291b6dd4d",
+    "filename": "is Remote TCP port open.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "9b1b97c1-2266-480c-9d1e-98c29fc461f7",
+    "filename": "Exchange Health.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "e8dc7def-94ee-4d20-bfcd-8148887d37bc",
+    "filename": "Boot mode.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "40f79914-bb5b-4151-83dc-dcfe5b136996",
+    "filename": "Backup Veeam SPC.py",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "NOTFOUND",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "6db47f00-7549-44d2-867b-d6d0a0972a4b",
+    "filename": "DFS replication.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "693bc9bf-604d-443d-a04f-3f134f4193c9",
+    "filename": "Trigger tasks on boot.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "e3741f7f-9d42-4cd3-936c-040c8f3761fb",
+    "filename": "Disk Free Space.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "e41e0cb5-c1fb-4c15-a9d1-2c0ee5c3e136",
+    "filename": "is RDP port ok.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "ca37fb2f-836e-444c-a023-f54bc19623c7",
+    "filename": "AD Connect health.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Checks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "434c92ef-d001-4bcc-b4d7-cade89fc1848",
+    "filename": "Create generic admin account.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Build",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "e77a9725-5af3-4632-87fe-29761308b48b",
+    "filename": "Forward HTTP Traffic To Company Website.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Build",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "6fc7ebb0-94fe-4463-8cdc-ef1b64fb616d",
+    "filename": "Change default chocolatey repo to internal.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Build",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "076fd9cd-5f4a-4e14-82c7-dbd2bc9fbfaa",
+    "filename": "Update TRMM agent.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Build",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "6d5e3edc-be76-4c29-bbb9-fa6ba0282422",
+    "filename": "TRMM agent deployment.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Build",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "43e38c84-ffe5-4470-9455-c50fe5b9eb8c",
+    "filename": "Upgrade OS to Windows Server X Standard.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Build",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "8c2df0d7-f3d2-4bdd-b774-3511a112020a",
+    "filename": "Change NTP target to company.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Build",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "de1ab37d-121d-47b6-8f96-1611eb07e49a",
+    "filename": "Ensure all services with startup type Automatic are running.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Fixes",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "acacf1dc-f313-490a-8cf5-e0d87dd62e77",
+    "filename": "RDS Fix taskbar.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Fixes",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "b979efa3-b077-445f-b04d-2f4f3d022827",
+    "filename": "Resync time NTP.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Fixes",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "a97f4157-ebfd-4f47-8193-6b85319bfc5b",
+    "filename": "Fix broken ESET installation.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Fixes",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "624c63ab-f595-4702-abfc-24ae96e9996e",
+    "filename": "Bluescreen report.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Fixes",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "d12d62de-dea4-4345-a6ef-171b3e990eca",
+    "filename": "Mail notification password expiry.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Backend",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "6d003b1b-8d0e-49d8-b45b-7b25e5dd54d0",
+    "filename": "Sync TRMM with GIT.py",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "NOTFOUND",
+    "category": "Backend",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "060bda80-8050-4ced-ae4d-2c97ae3f0ad3",
+    "filename": "Repo package updater.py",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "NOTFOUND",
+    "category": "Backend",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "d79df684-18f0-4a97-9f71-40c508392287",
+    "filename": "Uptime Kuma Monitoring For Tactical.py",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "NOTFOUND",
+    "category": "Backend",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "0ee5d8a0-741a-4993-9e91-a6ad7f32dc59",
+    "filename": "Force Azureo365 AD sync.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tools",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "2ec2ad08-3901-4d7a-93ac-d39ed245b7d8",
+    "filename": "Expand partitiondrivedisk size.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tools",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "22f8af7d-957f-43b5-b65d-2c7ae52eba78",
+    "filename": "Get last shutdown info.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tools",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "d41051c7-5c8a-4f0d-8666-d21b115b0085",
+    "filename": "Activate windows with KMS.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tools",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "ff664b29-f232-4285-9b4a-4b8dc8e6c21f",
+    "filename": "Cleanup temp files.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tools",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "2cfba2e3-8f68-486d-a5a0-04d140516d68",
+    "filename": "Deploy diagnostic toolkit.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tools",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "f088c51a-2a24-4c86-9cbc-ea0a7f2afacc",
+    "filename": "Get logon events.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tools",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "db15abf5-c3ca-4e49-9a48-d3cdb7d031d6",
+    "filename": "azure AD Connect Certificate Cleanup.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tools",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "93c3b140-e08b-447b-9316-9b980892674a",
+    "filename": "Reset permission of target folder.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tools",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "b5acded5-6e93-4fc0-ac65-dcc6af673b80",
+    "filename": "Troubleshoot windows update.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tools",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "63567067-55dd-4bb9-bdcf-7b2974f2fb88",
+    "filename": "Windows update force install new updates.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tools",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "1a583749-b16f-438a-a050-eab786a1dec2",
+    "filename": "SSL Certificate manager.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tools",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "e7544e22-a668-49c9-ac6d-a3365cd30389",
+    "filename": "IP block lists for specified countries.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tools",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "e2ae883a-efae-4c5f-8264-e59bf0521a3e",
+    "filename": "Measures TCP Latency.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tools",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "54fd2027-2809-4452-840e-d100264a9cdf",
+    "filename": "Updater P2 Scheduler WU, SU, PS and Cleaner.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "TasksUpdater",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "58a357ae-7886-4563-9fb4-6b7318d73cfb",
+    "filename": "Updater P3 Run SU.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "TasksUpdater",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "400389b8-dea5-4d9a-8384-be8b1e4f7a9b",
+    "filename": "Updater P3 Run WU.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "TasksUpdater",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "7659ac9a-0e5a-4988-ade4-02ba4c740c67",
+    "filename": "Updater P3 Run Cleaner.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "TasksUpdater",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "7324ff97-2e27-44eb-a21f-181be474f43e",
+    "filename": "Updater P3 Run PS.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "TasksUpdater",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "18b04335-4a0a-4f85-84ce-80321c79fc94",
+    "filename": "Updater P1 Template WU, SU, PS and Cleaner.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "TasksUpdater",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "aad7fa3d-a467-43e6-be95-5a4bb5efaa75",
+    "filename": "CallPowerShell7Lite.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "snippets",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "5bdeac49-37fa-4c2f-9b90-12a4a6f158d2",
+    "filename": "Updater P3.5 Schedules parser.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "snippets",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "7e6fbd0e-0741-48fe-b660-cdf3e987ea96",
+    "filename": "Logging.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "snippets",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "f5c140db-0157-4b1c-9436-f1fcb6cd8240",
+    "filename": "Cleaner.ps1",
+    "submittedBy": "Omnicef",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "snippets",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "e835738c-8875-4f06-8739-d9041501f5da",
+    "filename": "CallPowerShell7.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "snippets",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "76a2e512-8520-43ef-a819-8bccac6998a5",
+    "filename": "Update TRMM agent.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "snippets",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "8aefc467-3eff-4540-8f48-e8d79eb49eb3",
+    "filename": "GeneratedPassphrase.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "snippets",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "9ef047ef-8dc0-4421-9fd7-5349e2ec8cd1",
+    "filename": "VHDXCleaner.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "snippets",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "d5274fb8-65c3-4d17-8f2a-ffef4fab8e2f",
+    "filename": "get Domains or Workgroup name.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Collectors",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "aebe18d1-943b-431f-8f93-e26128abf007",
+    "filename": "Collect Licensing 2 SQL.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Collectors",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "2dd205b9-1fa0-40e3-8a89-06cabd48ec83",
+    "filename": "Collect Licensing 5 Office.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Collectors",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "f4ee890b-a9a3-4448-b3de-05385131405e",
+    "filename": "Collect Licensing 1 General.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Collectors",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "94160fde-0379-47da-b0b0-39a83aab99eb",
+    "filename": "Collect Licensing 3 Exchange.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Collectors",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "9e8aee6d-3173-457d-9ab1-f4819ba0e4b2",
+    "filename": "Retrieve all IIS bindings.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Collectors",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "b1878810-0ca8-46a7-8445-9296ae174dd0",
+    "filename": "OS Install Date.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Collectors",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "e8f68148-5ce6-4c42-b6ca-37f90d02b098",
+    "filename": "Collect Licensing 4 RDS.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Collectors",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "08e5c3e0-fb34-4ac4-800c-296021a661b9",
+    "filename": "Backup Veeam api v1_7.py",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "NOTFOUND",
+    "category": "Archives",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "0fd4542d-82ff-4332-8534-c775252e3dc3",
+    "filename": "Start Eset update.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tasks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "0b7e431a-4962-4ece-85b7-1629090f3bb1",
+    "filename": "Kill Switch Manager.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tasks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "4319b54d-29b6-4b28-8707-733cc2f9d98c",
+    "filename": "Start Eset scan V2.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tasks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "73796ec2-f863-47be-bf78-591ad2ffa450",
+    "filename": "Change user password.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tasks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "646877b7-2f7e-4952-8582-9d10637d2a2b",
+    "filename": "Auto-logoff users.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tasks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
+  },
+  {
+    "guid": "846888c5-1671-420a-aab5-4d61ae48821b",
+    "filename": "Import RD Gateway Cert From IIS.ps1",
+    "submittedBy": "P6g9YHK6",
+    "name": "NOTFOUND",
+    "description": "NOTFOUND",
+    "shell": "powershell",
+    "category": "Tasks",
+    "supported_platforms": [
+      "NOTFOUND"
+    ],
+    "default_timeout": "NOTFOUND"
   }
 ]
