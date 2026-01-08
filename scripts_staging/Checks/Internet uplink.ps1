@@ -21,6 +21,8 @@
 
 .CHANGELOG
     25.03.25 SAN Format output
+    08.01.26 SAN updated AWS http://ec2-reachability.amazonaws.com/
+
 .TODO
     Include customizable input for the list of IP addresses.
     Enhance error handling for unreachable hosts.
@@ -46,8 +48,8 @@ $ipAddresses = @(
     @{ IP="149.112.112.112"; Owner="Quad9 DNS" },
     @{ IP="13.107.42.14"; Owner="Microsoft Azure" },
     @{ IP="20.190.160.1"; Owner="Microsoft Azure" },
-    @{ IP="54.239.28.85"; Owner="Amazon AWS" },
-    @{ IP="205.251.242.103"; Owner="Amazon AWS" }
+    @{ IP="3.80.0.0"; Owner="Amazon AWS" },
+    @{ IP="3.64.0.0"; Owner="Amazon AWS" }
 )
 
 $pingFailed = $false
