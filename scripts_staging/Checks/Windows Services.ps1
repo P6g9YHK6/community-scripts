@@ -29,6 +29,7 @@
     27.03.25 SAN added kerberos local key to default
     31.03.25 SAN Added a new patern for ignroring user services (servicename_XXX) while keeping their system counterpart inculded
     17.07.25 SAN Added InventorySvc it is expected to randomly turn on and off 
+    08.01.26 SAN Added AppX Deployment Service (AppXSVC) to ignored due to an update
 #>
 
 
@@ -64,7 +65,9 @@ $ignoredByDefault = @(
     "ShellHWDetection", # Frequently failing; unclear if actionable
     "DropboxUpdater",
     "LocalKDC", # https://learn.microsoft.com/en-us/answers/questions/2136070/windows-server-2025-kerberos-local-key-distributio
-    "InventorySvc" #https://learn.microsoft.com/en-us/answers/questions/2258983/inventory-and-compatibility-appraisal-service-in-m
+    "InventorySvc", # https://learn.microsoft.com/en-us/answers/questions/2258983/inventory-and-compatibility-appraisal-service-in-m
+    "AppXSVC" # https://learn.microsoft.com/en-us/answers/questions/5660157/appxsvc-forced-to-automatic-on-server-2025
+
 )
 
 # Define a list of services to ignore that match the pattern "nameoftheservice_xxxx"
