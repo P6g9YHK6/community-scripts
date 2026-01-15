@@ -118,6 +118,7 @@
     Delete script support from git ? (dedicated function required at the end of step 2, if json exist but no script matches mark for delete json and use the id of the json to tell the api to delete in trmm)
     Squash commit from minor update json with previous commit
     Add reporting support
+    add variables for name and email for the commit 
     
 
 """
