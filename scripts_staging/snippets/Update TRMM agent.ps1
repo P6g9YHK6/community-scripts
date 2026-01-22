@@ -6,12 +6,11 @@
     This script installs the Tactical RMM agent using either a signed or unsigned installer.
 
     - If the environment variable `trmm_sign_download_token` is present, a signed download is assumed automatically.
-    - If no token is provided, the unsigned installer is downloaded from GitHub.
+    - If no code signing token is provided, the unsigned installer is downloaded from GitHub.
     - The installer is downloaded to: C:\ProgramData\TacticalRMM\temp
     - The installer is launched in a detached execution context so it survives TRMM agent restarts.
 
-    The signed download token can be found in the PowerShell deployment script generated when deploying
-    a single agent from the Tactical RMM web interface.
+    The code signing token is the one provided by amidaware and can be found in the code signing section of TRMM.
 
 .PARAMETER version
     Version to install. Use "latest" or leave unset to auto-detect latest GitHub release.
@@ -22,7 +21,7 @@
     Provided via environment variable: trmm_sign_download_token
 
 .PARAMETER trmm_api_target
-    API target for signed downloads (required if token is provided).
+    API target for signed downloads (required if token is provided otherwise optional).
     Provided via environment variable: trmm_api_target
 
 .EXAMPLE
