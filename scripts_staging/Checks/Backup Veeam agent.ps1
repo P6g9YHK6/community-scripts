@@ -17,89 +17,137 @@
 
 .CHANGELOG
     15/04/25 SAN Code Cleaup & Publication
+    12.02.26 SAN Code improvement and fix for v13
 
 .TODO
     Var to env
-    get latest logs in case of error and output the logs
 
 #>
 
+# CONFIG 
 $RootDirectory = "C:\ProgramData\Veeam\Endpoint"
 $ThresholdHours = 48
-$DateFormat = "dd.MM.yyyy HH:mm:ss"
+$DateFormat = "dd.MM.yyyy HH:mm:ss.fff"
 $LogPattern = "Job session '.*' has been completed, status: '(.*?)',"
+$FailureLogLines = 50
+
 
 function Get-RecentLogFile {
-    try {
-        $logFile = Get-ChildItem -Path $RootDirectory -Filter "*.Backup.log" -Recurse | 
-                   Sort-Object LastWriteTime -Descending | 
-                   Select-Object -First 1
-        return $logFile
-    } catch {
-        Write-Output "KO: Error accessing files: $_"
-        exit 1
+    if (-not (Test-Path $RootDirectory)) {
+        throw "Directory not found: $RootDirectory"
     }
+
+    $logFile = Get-ChildItem -Path $RootDirectory -Filter "*.Backup.log" -Recurse -ErrorAction Stop |
+               Sort-Object LastWriteTime -Descending |
+               Select-Object -First 1
+
+    if (-not $logFile) {
+        throw "No .Backup.log files found."
+    }
+
+    return $logFile
 }
 
 function Get-JobStatusFromLog {
-    param ($logFile)
-    try {
-        $recentLine = Select-String -Path $logFile.FullName -Pattern $LogPattern | 
-                      Select-Object -Last 1
-        
-        if ($recentLine -and $recentLine.Line -match "\[(.*?)\] .* Job session '.*' has been completed, status: '(.*?)',") {
-            $dateTime = $matches[1]
-            $status = $matches[2]
-            return @{ DateTime = $dateTime; Status = $status }
-        } else {
-            Write-Output "KO: No matching lines found in the log file."
-            exit 1
-        }
-    } catch {
-        Write-Output "KO: Error processing the log file: $_"
-        exit 1
+    param (
+        [Parameter(Mandatory)]
+        [System.IO.FileInfo]$LogFile
+    )
+
+    $recentLine = Select-String -Path $LogFile.FullName -Pattern $LogPattern -ErrorAction Stop |
+                  Select-Object -Last 1
+
+    if (-not $recentLine) {
+        throw "No matching job completion entry found in log."
     }
+
+    if ($recentLine.Line -match "\[(.*?)\].*status: '(.*?)',") {
+        return @{
+            DateTime = $matches[1]
+            Status   = $matches[2]
+        }
+    }
+
+    throw "Log entry found but parsing failed."
 }
 
 function Check-JobStatus {
     param (
-        [string]$dateTime,
-        [string]$status
+        [Parameter(Mandatory)][string]$DateTime,
+        [Parameter(Mandatory)][string]$Status
     )
 
-    try {
-        $logDate = [datetime]::ParseExact($dateTime, $DateFormat, $null)
-        $timeSpan = New-TimeSpan -Start $logDate -End (Get-Date)
+    $culture = [System.Globalization.CultureInfo]::InvariantCulture
 
-        if ($status -ne "Success") {
-            Write-Output "KO: Job status is not 'Success'."
-            exit 1
-        } elseif ($timeSpan.TotalHours -gt $ThresholdHours) {
-            Write-Output "KO: Log entry is older than $ThresholdHours hours."
-            exit 1
-        } else {
-            Write-Output "OK: Job Status: $status, Date and Time: $dateTime"
-            exit 0
+    try {
+        $logDate = [datetime]::ParseExact($DateTime, $DateFormat, $culture)
+    }
+    catch {
+        throw "Timestamp format invalid: '$DateTime'"
+    }
+
+    $timeSpan = New-TimeSpan -Start $logDate -End (Get-Date)
+
+    if ($Status -ne "Success") {
+        return @{
+            Code = 1
+            Message = "KO: Job status is '$Status'"
         }
-    } catch {
-        Write-Output "KO: Error checking job status: $_"
-        exit 1
+    }
+
+    if ($timeSpan.TotalHours -gt $ThresholdHours) {
+        return @{
+            Code = 1
+            Message = "KO: Last backup older than $ThresholdHours hours (Last run: $DateTime)"
+        }
+    }
+
+    return @{
+        Code = 0
+        Message = "OK: Job succeeded at $DateTime"
     }
 }
 
+function Write-FailureDetails {
+    param (
+        [string]$Message,
+        [System.IO.FileInfo]$LogFile
+    )
+
+    Write-Output $Message
+
+    if ($LogFile -and (Test-Path $LogFile.FullName)) {
+        Write-Output "---- Last $FailureLogLines log lines ----"
+        try {
+            Get-Content -Path $LogFile.FullName -Tail $FailureLogLines -ErrorAction Stop |
+                ForEach-Object { Write-Output $_ }
+        }
+        catch {
+            Write-Output "Unable to read log tail: $($_.Exception.Message)"
+        }
+    }
+}
+
+#MAIN
+
+$logFile = $null
+
 try {
     $logFile = Get-RecentLogFile
+    $jobInfo = Get-JobStatusFromLog -LogFile $logFile
+    $result  = Check-JobStatus -DateTime $jobInfo.DateTime -Status $jobInfo.Status
 
-    if ($logFile) {
-        $jobInfo = Get-JobStatusFromLog -logFile $logFile
-        if ($jobInfo) {
-            Check-JobStatus -dateTime $jobInfo.DateTime -status $jobInfo.Status
-        }
-    } else {
-        Write-Output "KO: No .Backup.log files found in the directory or subdirectories."
+    if ($result.Code -eq 0) {
+        Write-Output $result.Message
+        exit 0
+    }
+    else {
+        Write-FailureDetails -Message $result.Message -LogFile $logFile
         exit 1
     }
-} catch {
-    Write-Output "KO: Unexpected error: $_"
+}
+catch {
+    $errorMessage = "KO: $($_.Exception.Message)"
+    Write-FailureDetails -Message $errorMessage -LogFile $logFile
     exit 1
 }
