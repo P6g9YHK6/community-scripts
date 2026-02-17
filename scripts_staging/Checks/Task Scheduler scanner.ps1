@@ -11,6 +11,7 @@
 .EXAMPLE 
     company_name={{global.Company_Name}}
     company_name=Consonto
+    debug=1
 
 
 .NOTES
@@ -21,9 +22,9 @@
 .CHANGELOG
     02.07.25 SAN Added company name to the folders
     17.07.25 SAN added powertoys
+    17.02.26 SAN Format output + debug flag
 
 .TODO
-    Use a flag for debug
     set ignore value from env
 
 #>
@@ -31,7 +32,8 @@
 
 
 # Set the debug flag
-$debug = 0
+$debug = if ($env:debug -eq "1") { 1 } else { 0 }
+
 
 # Retrieve all scheduled tasks
 $tasks = Get-ScheduledTask
@@ -135,13 +137,10 @@ foreach ($task in $tasks) {
     }
 }
 
-# Check if the taskDetails array is empty
 if ($taskDetails.Count -eq 0) {
-    Write-Output "No rogue tasks found"
+    Write-Output "OK: No rogue tasks found"
 } else {
-    Write-Output "Rogue tasks found, please execute with a service user"
-    # Output the task details
+    Write-Output "KO: Rogue tasks found, please execute with a service user"
     $taskDetails | Format-Table -AutoSize
-    # Exit with status code 1
     exit 1
 }
