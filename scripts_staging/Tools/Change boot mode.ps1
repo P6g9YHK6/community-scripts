@@ -23,9 +23,9 @@
     
 #>
 
-$toggleVar = "SAFEBOOT_MODE"
 
-$currentMode = [Environment]::GetEnvironmentVariable($toggleVar, "Machine")
+$toggleVar = "SAFEBOOT_MODE"
+$currentMode = $env:SAFEBOOT_MODE
 
 switch ($currentMode) {
 
