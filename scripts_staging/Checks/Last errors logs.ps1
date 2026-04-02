@@ -1,79 +1,114 @@
 <#
 .SYNOPSIS
-    This script retrieves and processes error events from the Windows Event Log within the last 48 and 12 hours.
+    Monitors Windows 'System' event logs and reports error events with configurable thresholds.
 
 .DESCRIPTION
-    This script is useful for monitoring and alerting on error events in the Windows Event Log.
-    The script processes error logs from the 'System' log only, only critical errors are counted and displayed.
+    This script retrieves error events from the Windows 'System' log over a configurable lookback period 
+    (default 48 hours) and evaluates them within a configurable evaluation window 
+    (default 12 hours). It filters out events by specified Event IDs and keywords. 
 
-    1. Retrieves the last 20 error events from the 'System' log in the last 48 hours, excluding specified event IDs.
-    2. Counts and displays the number of error events found in the last 48 hours (after filtering out ignored events).
-    3. Retrieves error events from the last 12 hours and checks if there are 4 or more errors.
-    4. If 4 or more errors are found in the last 12 hours, the script exits with an error code (1).
-    5. If fewer than 4 errors are found, the script exits with a success code (0).
+    The script supports three severity thresholds (set unrealistic threshold to disable):
+        - INFO: default 1 event
+        - WARN: default 2 events
+        - ERROR: default 4 events
 
-.EXEMPLE
-    debug=true
+    Behavior:
+        1. Retrieves error events (Level=2) from the 'System' log within the lookback period.
+        2. Filters out ignored Event IDs and keywords (defaults or via environment variables).
+        3. Evaluates events within the evaluation window:
+            - If count >= ERROR threshold, exits with ERROR exit code (3).
+            - If count >= WARN threshold, exits with WARN exit code (2).
+            - Otherwise, exits with INFO exit code (1).
+        4. Debug mode outputs filtered events and thresholds.
+
+.EXAMPLE
+    DEBUG=true
     FILTER_ID=1111,22222,3333
     FILTER_KEYWORD=keyword1,keyword2
+    INFO_THRESHOLD=1
+    WARN_THRESHOLD=2
+    ERROR_THRESHOLD=4
+    LOOKBACK_HOURS=72
+    EVALUATION_WINDOW_HOURS=24
 
 .NOTES
     Author: SAN
     Date: 24.10.2024
-    #public
-
-    10016 safe to ignore
-    https://learn.microsoft.com/en-us/troubleshoot/windows-client/application-management/event-10016-logged-when-accessing-dcom
-    36874 to ignore
-    Fixing the issue would be more dangerous than leaving it be it would require blocking tls 1.2 and forcing 1.1 with unsafe cyphers and loosing connection to devices that do not support 1.1
+    #PUBLIC
+    Default ignored Event IDs:
+        10016 - safe to ignore, see:
+            https://learn.microsoft.com/en-us/troubleshoot/windows-client/application-management/event-10016-logged-when-accessing-dcom
+        36874 - ignored due to TLS/connection constraints
 
 .CHANGELOG
-    04.12.24 SAN added id to ignore in comma separeted variable
-    12.12.24 SAN adding keyword filters, added filter addition via env var
-
-.TODO
-    Set 20 Error Events and 48 hours in vars same for 4 and 12
-    Re-thing the thresholds to add info warn error limits
+    04.12.24 SAN: Added environment variable support for ignored Event IDs.
+    12.12.24 SAN: Added keyword filters and support for dynamic filter addition via environment variables.
+    02.04.26 SAN: Added configurable info/warn/error thresholds with exit codes.
 
 #>
 
-$defaultEventIds = @(10016,36874)
-$defaultKeywords = @("gupdate","anotherkeyword")
+$defaultEventIds      = @(10016, 36874)
+$defaultKeywords      = @("gupdate", "anotherkeyword")
 
-$debug = [System.Environment]::GetEnvironmentVariable("DEBUG")
-$filterIdEnv = [System.Environment]::GetEnvironmentVariable("FILTER_ID")
-$filterKeywordEnv = [System.Environment]::GetEnvironmentVariable("FILTER_KEYWORD")
+$defaultInfoThreshold  = 1
+$defaultWarnThreshold  = 2
+$defaultErrorThreshold = 4
 
-$ignoredEventIds = if ($filterIdEnv) { 
-    $filterIdEnv.Split(",") + $defaultEventIds 
-} else { 
-    $defaultEventIds 
+$defaultLookbackHours        = 48
+$defaultEvaluationWindowHours = 12
+
+$infoExitCode   = 1
+$warnExitCode   = 2
+$errorExitCode  = 3
+
+$debug              = $env:DEBUG
+$filterIdEnv        = $env:FILTER_ID
+$filterKeywordEnv   = $env:FILTER_KEYWORD
+
+$infoThresholdEnv   = $env:INFO_THRESHOLD
+$warnThresholdEnv   = $env:WARN_THRESHOLD
+$errorThresholdEnv  = $env:ERROR_THRESHOLD
+
+$lookbackEnv        = $env:LOOKBACK_HOURS
+$evaluationEnv      = $env:EVALUATION_WINDOW_HOURS
+
+$ignoredEventIds = if ($filterIdEnv) { ($filterIdEnv.Split(",") | ForEach-Object { $_.Trim() }) + $defaultEventIds } else { $defaultEventIds }
+$ignoredKeywords = if ($filterKeywordEnv) { ($filterKeywordEnv.Split(",") | ForEach-Object { $_.Trim() }) + $defaultKeywords } else { $defaultKeywords }
+
+$infoThreshold  = if ($infoThresholdEnv)  { [int]$infoThresholdEnv }  else { $defaultInfoThreshold }
+$warnThreshold  = if ($warnThresholdEnv)  { [int]$warnThresholdEnv }  else { $defaultWarnThreshold }
+$errorThreshold = if ($errorThresholdEnv) { [int]$errorThresholdEnv } else { $defaultErrorThreshold }
+
+$lookbackHours = if ($lookbackEnv) { [int]$lookbackEnv } else { $defaultLookbackHours }
+$evaluationWindowHours = if ($evaluationEnv) { [int]$evaluationEnv } else { $defaultEvaluationWindowHours }
+
+$lookbackStartTime   = (Get-Date).AddHours(-$lookbackHours)
+$evaluationStartTime = (Get-Date).AddHours(-$evaluationWindowHours)
+
+$allErrors = Get-WinEvent -FilterHashtable @{ LogName='System'; Level=2; StartTime=$lookbackStartTime } -ErrorAction SilentlyContinue
+
+function Test-KeywordMatch {
+    param ($event, $keywords)
+    $eventData = $event.Properties -join " " + " " + $event.Message
+    foreach ($keyword in $keywords) { if ($eventData -match "(?i)\b$($keyword)\b") { return $true } }
+    return $false
 }
 
-$ignoredKeywords = if ($filterKeywordEnv) { 
-    $filterKeywordEnv.Split(",") + $defaultKeywords 
-} else { 
-    $defaultKeywords 
+$filteredErrors = $allErrors | Where-Object {
+    $eventIdMatches = $ignoredEventIds -contains $_.Id.ToString()
+    $keywordMatches = Test-KeywordMatch $_ $ignoredKeywords
+    -not ($eventIdMatches -or $keywordMatches)
 }
 
-$start48h = (Get-Date).AddHours(-48)
-$start12h = (Get-Date).AddHours(-12)
-
-$allErrors48h = Get-WinEvent -FilterHashtable @{LogName='System'; Level=2; StartTime=$start48h} -ErrorAction SilentlyContinue
-
-$eventsWithIdFilter = $allErrors48h | Where-Object { $ignoredEventIds -contains $_.Id.ToString() }
-
-$eventsWithKeywordFilter = $allErrors48h | Where-Object {
-    $eventData = $_.Properties -join " "
-    $eventData += " " + $_.Message
-    $keywordMatches = $false
-    $ignoredKeywords | ForEach-Object {
-        $keyword = $_.Trim()
-        if ($eventData -match "(?i)\b$($keyword)\b") {
-            $keywordMatches = $true
-        }
-    }
-    $keywordMatches
+if ($debug -eq "true") {
+    Write-Output "DEBUG MODE ENABLED"
+    Write-Output "Ignored Event IDs: $ignoredEventIds"
+    Write-Output "Ignored Keywords: $ignoredKeywords"
+    Write-Output "INFO Threshold: $infoThreshold"
+    Write-Output "WARN Threshold: $warnThreshold"
+    Write-Output "ERROR Threshold: $errorThreshold"
+    Write-Output "Lookback Hours: $lookbackHours"
+    Write-Output "Evaluation Window Hours: $evaluationWindowHours"
 }
 
 if ($debug -eq "true") {
@@ -82,75 +117,49 @@ if ($debug -eq "true") {
     Write-Output "DEBUG: Filtered Keywords: $ignoredKeywords"
 
     if ($eventsWithIdFilter.Count -gt 0) {
-        Write-Output "Filtered Events by Event ID in the last 48 hours:"
-        $eventsWithIdFilter | ForEach-Object {
-            Write-Output "TimeCreated: $($_.TimeCreated)"
-            Write-Output "Event ID: $($_.Id)"
-            Write-Output "Message: $($_.Message)"
-            Write-Output "----------------------------------------"
-        }
-    } else {
-        Write-Output "No events found matching the specified Event IDs in the last 48 hours."
-    }
+        Write-Output "Filtered Events by Event ID in the last $lookbackHours hours:"
+        $eventsWithIdFilter | ForEach-Object { Write-Output "TimeCreated: $($_.TimeCreated)"; Write-Output "Event ID: $($_.Id)"; Write-Output "Message: $($_.Message)"; Write-Output "----------------------------------------" }
+    } else { Write-Output "No events found matching the specified Event IDs in the last $lookbackHours hours." }
 
     if ($eventsWithKeywordFilter.Count -gt 0) {
-        Write-Output "Filtered Events by Keyword in the last 48 hours:"
-        $eventsWithKeywordFilter | ForEach-Object {
+        Write-Output "Filtered Events by Keyword in the last $lookbackHours hours:"
+        $eventsWithKeywordFilter | ForEach-Object { Write-Output "TimeCreated: $($_.TimeCreated)"; Write-Output "Event ID: $($_.Id)"; Write-Output "Message: $($_.Message)"; Write-Output "----------------------------------------" }
+    } else { Write-Output "No events found matching the specified Keywords in the last $lookbackHours hours." }
+}
+
+$errorsInEvaluationWindow = $filteredErrors | Where-Object { $_.TimeCreated -gt $evaluationStartTime }
+$count = $errorsInEvaluationWindow.Count
+
+if ($count -ge $errorThreshold) {
+    Write-Output "CRITICAL: $count error events in last $evaluationWindowHours hours (threshold: $errorThreshold)."
+    $errorsInEvaluationWindow | ForEach-Object {
+        Write-Output "TimeCreated: $($_.TimeCreated)"
+        Write-Output "Event ID: $($_.Id)"
+        Write-Output "Message: $($_.Message)"
+        Write-Output "----------------------------------------"
+    }
+    exit $errorExitCode
+}
+elseif ($count -ge $warnThreshold) {
+    Write-Output "WARNING: $count error events in last $evaluationWindowHours hours (threshold: $warnThreshold)."
+    $errorsInEvaluationWindow | ForEach-Object {
+        Write-Output "TimeCreated: $($_.TimeCreated)"
+        Write-Output "Event ID: $($_.Id)"
+        Write-Output "Message: $($_.Message)"
+        Write-Output "----------------------------------------"
+    }
+    exit $warnExitCode
+}
+else {
+    if ($count -eq 0) { Write-Output "INFO: No error events in last $evaluationWindowHours hours." }
+    else {
+        Write-Output "INFO: $count error event(s) in last $evaluationWindowHours hours (below warning threshold: $warnThreshold)."
+        $errorsInEvaluationWindow | ForEach-Object {
             Write-Output "TimeCreated: $($_.TimeCreated)"
             Write-Output "Event ID: $($_.Id)"
             Write-Output "Message: $($_.Message)"
             Write-Output "----------------------------------------"
         }
-    } else {
-        Write-Output "No events found matching the specified Keywords in the last 48 hours."
     }
-}
-
-$remainingErrors48h = $allErrors48h | Where-Object {
-    $eventIdMatches = $ignoredEventIds -contains $_.Id.ToString()
-    $eventData = $_.Properties -join " "
-    $eventData += " " + $_.Message
-    $keywordMatches = $false
-    $ignoredKeywords | ForEach-Object {
-        $keyword = $_.Trim()
-        if ($eventData -match "(?i)\b$($keyword)\b") {
-            $keywordMatches = $true
-        }
-    }
-    if ($eventIdMatches -or $keywordMatches) {
-        $false
-    } else {
-        $true
-    }
-}
-
-if ($remainingErrors48h.Count -gt 0) {
-    Write-Output "Remaining Error Events in the last 48 hours (after filtering out ignored Event IDs and Keywords):"
-    $remainingErrors48h | ForEach-Object {
-        Write-Output "TimeCreated: $($_.TimeCreated)"
-        Write-Output "Event ID: $($_.Id)"
-        Write-Output "Message: $($_.Message)"
-        Write-Output "----------------------------------------"
-    }
-}
-
-$errors12h = $remainingErrors48h | Where-Object { $_.TimeCreated -gt $start12h }
-
-if ($errors12h.Count -ge 4) {
-    Write-Output "Error: 4 or more error events found in the last 12 hours."
-    Write-Output "Error Events in the last 12 hours (excluding ignored event IDs and keywords):"
-    $errors12h | ForEach-Object {
-        Write-Output "TimeCreated: $($_.TimeCreated)"
-        Write-Output "Event ID: $($_.Id)"
-        Write-Output "Message: $($_.Message)"
-        Write-Output "----------------------------------------"
-    }
-    exit 1
-} else {
-    if ($errors12h.Count -eq 0) {
-        Write-Output "OK: No error events found in the last 12 hours."
-    } else {
-        Write-Output "OK: Less than 4 error events found in the last 12 hours."
-    }
-    exit 0
+    exit $infoExitCode
 }
