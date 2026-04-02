@@ -150,16 +150,17 @@ elseif ($count -ge $warnThreshold) {
     }
     exit $warnExitCode
 }
-else {
-    if ($count -eq 0) { Write-Output "INFO: No error events in last $evaluationWindowHours hours." }
-    else {
-        Write-Output "INFO: $count error event(s) in last $evaluationWindowHours hours (below warning threshold: $warnThreshold)."
-        $errorsInEvaluationWindow | ForEach-Object {
-            Write-Output "TimeCreated: $($_.TimeCreated)"
-            Write-Output "Event ID: $($_.Id)"
-            Write-Output "Message: $($_.Message)"
-            Write-Output "----------------------------------------"
-        }
+elseif ($count -ge $infoThreshold) {
+    Write-Output "INFO: $count error event(s) in last $evaluationWindowHours hours (below warning threshold: $warnThreshold)."
+    $errorsInEvaluationWindow | ForEach-Object {
+        Write-Output "TimeCreated: $($_.TimeCreated)"
+        Write-Output "Event ID: $($_.Id)"
+        Write-Output "Message: $($_.Message)"
+        Write-Output "----------------------------------------"
     }
     exit $infoExitCode
+}
+else {
+    Write-Output "OK: $count error events in last $evaluationWindowHours hours (below all thresholds)."
+    exit 0
 }
