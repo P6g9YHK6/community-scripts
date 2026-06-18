@@ -52,6 +52,7 @@ Changelog:
      18.06.26 SAN item-4 per-restore-point breakdown (backupRestorePoints endpoint), item-13 job last session state, item-19 expand parameter, enriched Restoration Status Report
      18.06.26 SAN added WARNING_HOURS threshold, 4-level exit codes (0=OK, 1=WARNING, 2=CRITICAL, 3=ERROR)
      18.06.26 SAN removed malware state, removed dead job detail code, standardized function naming to snake_case, narrowed exceptions
+     18.06.26 SAN added api_get_job_infos/api_get_backup_server, enriched report with Backup Server/Job/Status/Repository, job status check exits CRITICAL, removed unused api_get_backup_repo/api_get_all_repos, enhanced debug logging for missing fields
 
 """
 
@@ -160,25 +161,12 @@ def api_get_vm_backup_restore_points(vm_uid):
     base_url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/virtualMachines/{vm_uid}/backupRestorePoints"
     return api_get_all_paginated(base_url, headers, timeout=15)
 
-def api_get_backup_repo(srv_uid, repo_uid):
-    """Fetches a specific backup repository by server UID and repository UID."""
-    headers = get_auth_headers()
-    url = f"{env_vars['APIURL']}/api/v3/infrastructure/backupServers/{srv_uid}/repositories/{repo_uid}"
-    response = api_call_with_retries(url, method='GET', headers=headers)
-    return response.json()
-
 def api_get_job_infos(job_uid):
     """Fetches job information by job UID."""
     headers = get_auth_headers()
     url = f"{env_vars['APIURL']}/api/v3/infrastructure/backupServers/jobs/{job_uid}"
     response = api_call_with_retries(url, method='GET', headers=headers)
     return response.json()
-
-def api_get_all_repos():
-    """Fetches all backup repositories across all backup servers with pagination."""
-    headers = get_auth_headers()
-    base_url = f"{env_vars['APIURL']}/api/v3/infrastructure/backupServers/repositories"
-    return api_get_all_paginated(base_url, headers)
 
 def api_get_backup_server(server_uid):
     """Fetches backup server details by server UID."""
@@ -352,6 +340,9 @@ def main():
                 job_name = job_info.get("name")
                 job_status = job_info.get("status")
                 repo_name = job_info.get("destination")
+                if job_status and job_status != "Success":
+                    print(f"CRITICAL: Job '{job_name}' last status is '{job_status}'.")
+                    sys.exit(EXIT_CRITICAL)
                 log_debug(f"Job fetched: {job_name}, status={job_status}, destination={repo_name} (jobUID={job_uid})")
                 try:
                     server_data = api_get_backup_server(backup_server_uid)
