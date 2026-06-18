@@ -34,6 +34,7 @@ Changelog:
 
     27.03.25 SAN added more debug
     15.04.25 SAN big code cleanup + publication
+    17.06.26 SAN server-side filter + pagination + timeouts + api key test
 
 TODO:
     better flow for the "force"
@@ -78,11 +79,11 @@ def get_timestamp(date_str):
     """Converts a date string to a Unix timestamp."""
     return time.mktime(datetime.strptime(date_str[:26], "%Y-%m-%dT%H:%M:%S.%f").timetuple())
 
-def api_call_with_retries(url, method='GET', data=None, headers=None, retries=5, wait=60):
+def api_call_with_retries(url, method='GET', data=None, headers=None, retries=5, wait=60, timeout=60):
     """Makes an API call with retries for handling HTTP 429 responses."""
     for attempt in range(retries):
         try:
-            res = requests.request(method, url, data=data, headers=headers)
+            res = requests.request(method, url, data=data, headers=headers, timeout=timeout)
             if res.status_code == 429 and attempt < retries - 1:
                 print(f"HTTP 429 received. Retrying in {wait} seconds... (Attempt {attempt + 1}/{retries})")
                 time.sleep(wait)
@@ -95,6 +96,30 @@ def api_call_with_retries(url, method='GET', data=None, headers=None, retries=5,
                 sys.exit(1)
             time.sleep(wait)
 
+def api_get_all_paginated(base_url, headers, select_param=None, **kwargs):
+    """Fetches all pages from a paginated endpoint using offset-based pagination."""
+    limit = 500
+    offset = 0
+    all_data = []
+
+    while True:
+        url = f"{base_url}&limit={limit}&offset={offset}"
+        if select_param:
+            url += f"&select={select_param}"
+        res = api_call_with_retries(url, method='GET', headers=headers, **kwargs)
+        resp = res.json()
+        data = resp.get("data", [])
+        all_data.extend(data)
+
+        paging = resp.get("meta", {}).get("pagingInfo", {})
+        total = paging.get("total", offset + len(data))
+        if offset + limit >= total:
+            break
+        offset += limit
+
+    return all_data
+
+
 def get_auth_headers():
     """Returns the headers required for authenticated API requests."""
     return {
@@ -104,25 +129,38 @@ def get_auth_headers():
         "accept": "application/json",
     }
 
-def apiGet_BackedUpVMs():
-    """Retrieves a list of backed-up virtual machines."""
-    url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/virtualMachines?limit=500&select=[{{'propertyPath':'name'}},{{'propertyPath':'instanceUid'}},{{'propertyPath':'backupServerUid'}}]"
-    return api_call_with_retries(url, method='GET', headers=get_auth_headers())
+def apiGet_BackedUpVMs(name_filter=None):
+    """Retrieves backed-up VMs, with optional server-side name filter and pagination."""
+    headers = get_auth_headers()
+    select = '[{"propertyPath":"name"},{"propertyPath":"instanceUid"},{"propertyPath":"backupServerUid"}]'
+
+    if name_filter:
+        url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/virtualMachines"
+        filter_json = json.dumps([{"property": "name", "operation": "contains", "collation": "ignorecase", "value": name_filter}])
+        url += f"?filter={filter_json}&select={select}"
+        r = api_call_with_retries(url, method='GET', headers=headers)
+        return r.json()["data"]
+
+    base_url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/virtualMachines?limit=500"
+    return api_get_all_paginated(base_url, headers, select_param=select)
 
 def apiGet_VMbackups(vmUID):
-    """Retrieves the list of backups for a specific VM."""
-    url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/virtualMachines/{vmUID}/backups?limit=500"
-    return api_call_with_retries(url, method='GET', headers=get_auth_headers())
+    """Retrieves all backups for a specific VM with pagination."""
+    headers = get_auth_headers()
+    base_url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/virtualMachines/{vmUID}/backups?limit=500"
+    return api_get_all_paginated(base_url, headers)
 
 def apiGet_BackedUpComputers():
-    """Retrieves a list of computers that are backed up."""
-    url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/computersManagedByBackupServer?limit=500"
-    return api_call_with_retries(url, method='GET', headers=get_auth_headers())
+    """Retrieves all backed-up computers with pagination."""
+    headers = get_auth_headers()
+    base_url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/computersManagedByBackupServer?limit=500"
+    return api_get_all_paginated(base_url, headers)
 
 def apiGet_ComputersRestorePoints():
-    """Retrieves restore points for computers managed by the backup server."""
-    url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/computersManagedByBackupServer/restorePoints?limit=500"
-    return api_call_with_retries(url, method='GET', headers=get_auth_headers())
+    """Retrieves all computer restore points with pagination."""
+    headers = get_auth_headers()
+    base_url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/computersManagedByBackupServer/restorePoints?limit=500"
+    return api_get_all_paginated(base_url, headers)
 
 # === Environment and Constants ===
 vmUID, lastRPoint, vmBkp_bkpSrvUID, tmpName, strSchedule = ("",) * 5
@@ -149,6 +187,7 @@ if env_vars['FORCE'] and "DISABLEDBACKUPCHECK" in env_vars['FORCE']:
     print("Backup check is disabled because 'FORCE' contains 'DISABLEDBACKUPCHECK'.")
     sys.exit(0)
 
+
 def main():
     try:
         log_debug("Parsed Environment Variables:")
@@ -161,18 +200,21 @@ def main():
         log_debug(f"  APIURL: {env_vars['APIURL']}")
         log_debug(f"  THRESHOLD_HOURS: {env_vars['THRESHOLD_HOURS']}\n")
 
-        log_debug("INFO: Fetching the list of all backed-up VMs...")
-        response = apiGet_BackedUpVMs().json()
-        backed_up_vms = response["data"]
-
-        for vm in backed_up_vms:
-            log_debug(f"VM Name: {vm['name']}")
-
         host_arg = (
             env_vars['FORCE']
             if env_vars.get('FORCE') and "Manual" not in env_vars['FORCE']
             else env_vars['HOST']
         )
+
+        log_debug(f"INFO: Fetching VMs filtered by name '{host_arg}'...")
+        backed_up_vms = apiGet_BackedUpVMs(name_filter=host_arg)
+
+        if not backed_up_vms:
+            log_debug("Server-side filter returned no results. Falling back to full paginated fetch...")
+            backed_up_vms = apiGet_BackedUpVMs()
+
+        for vm in backed_up_vms:
+            log_debug(f"VM Name: {vm['name']}")
 
         if env_vars.get('FORCE'):
             matching_vms = [vm for vm in backed_up_vms if host_arg == vm["name"]]
@@ -199,15 +241,13 @@ def main():
         log_debug(f"INFO: Selected VM: {tmpName} (UID: {vmUID})")
 
         try:
-            restore_points_response = (
+            restore_points = (
                 apiGet_ComputersRestorePoints() if isComputer else apiGet_VMbackups(vmUID)
             )
         except requests.exceptions.RequestException as e:
             print("API CALL FAILED: Unable to fetch restore points.")
             log_debug(str(e))
             sys.exit(2)
-
-        restore_points = restore_points_response.json()["data"]
 
         latest_restore_point = next(
             (p['creationTimeUtc'] for p in restore_points if 'creationTimeUtc' in p),
