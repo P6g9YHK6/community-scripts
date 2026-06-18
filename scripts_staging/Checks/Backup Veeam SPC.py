@@ -180,6 +180,13 @@ def api_get_all_repos():
     base_url = f"{env_vars['APIURL']}/api/v3/infrastructure/backupServers/repositories"
     return api_get_all_paginated(base_url, headers)
 
+def api_get_backup_server(server_uid):
+    """Fetches backup server details by server UID."""
+    headers = get_auth_headers()
+    url = f"{env_vars['APIURL']}/api/v3/infrastructure/backupServers/{server_uid}"
+    response = api_call_with_retries(url, method='GET', headers=headers)
+    return response.json()
+
 def resolve_host_arg():
     """Determines the hostname to query from FORCE, HOST, or local hostname."""
     force_val = env_vars['FORCE']
@@ -335,25 +342,27 @@ def main():
         job_uid = matched_vm.get("jobUid")
         repo_name = None
         job_name = None
-        job_last_state = None
+        job_status = None
+        server_name = None
 
-        if backup_server_uid:
-            repo_uid = matched_vm.get("repositoryUid")
-            if repo_uid:
-                try:
-                    repo_data = api_get_backup_repo(backup_server_uid, repo_uid)
-                    repo_name = repo_data.get("data", {}).get("name")
-                except (ValueError, requests.exceptions.RequestException) as e:
-                    log_debug(f"Failed to fetch repo info: {e}")
-
-        if job_uid:
+        if backup_server_uid and job_uid:
             try:
                 job_data = api_get_job_infos(job_uid)
                 job_info = job_data.get("data", {})
                 job_name = job_info.get("name")
-                job_last_state = job_info.get("lastState")
+                job_status = job_info.get("status")
+                repo_name = job_info.get("destination")
+                log_debug(f"Job fetched: {job_name}, status={job_status}, destination={repo_name} (jobUID={job_uid})")
+                try:
+                    server_data = api_get_backup_server(backup_server_uid)
+                    server_name = server_data.get("data", {}).get("name")
+                    log_debug(f"Backup server: {server_name} (uid={backup_server_uid})")
+                except (ValueError, requests.exceptions.RequestException) as e:
+                    log_debug(f"Failed to fetch backup server info (uid={backup_server_uid}): {e}")
             except (ValueError, requests.exceptions.RequestException) as e:
-                log_debug(f"Failed to fetch job info: {e}")
+                log_debug(f"Failed to fetch job info (jobUID={job_uid}): {e}")
+        else:
+            log_debug(f"backupServerUid or jobUid not present in VM data, skipping repo/job lookup")
 
         # Enrich with per-restore-point breakdown (Item 4)
         consistent_count = 0
@@ -363,6 +372,7 @@ def main():
         if vm_uid:
             try:
                 restore_points = api_get_vm_backup_restore_points(vm_uid)
+                log_debug(f"Restore points API returned {len(restore_points)} items for VM {vm_uid}")
                 for rp in restore_points:
                     if rp.get("isConsistent"):
                         consistent_count += 1
@@ -374,28 +384,48 @@ def main():
                             oldest_rp = rp_time
                         if not newest_rp or rp_time > newest_rp:
                             newest_rp = rp_time
-                log_debug(f"Restore points fetched: {len(restore_points)} total")
+                log_debug(f"Restore point stats: {consistent_count} consistent, {inconsistent_count} inconsistent")
+                if oldest_rp:
+                    log_debug(f"Oldest restore point: {oldest_rp}")
+                if newest_rp:
+                    log_debug(f"Newest restore point: {newest_rp}")
             except (ValueError, requests.exceptions.RequestException) as e:
-                log_debug(f"Failed to fetch restore points: {e}")
+                log_debug(f"Failed to fetch restore points for VM {vm_uid}: {e}")
+        else:
+            log_debug(f"vm_uid not present in VM data, skipping restore points lookup")
 
         print("Restoration Status Report:")
         print(f"- VM or Computer: {vm_name}")
         print(f"- Latest Restore Point Date/Time: {latest_restore_point}")
         print(f"- Number of Restore Points Available: {restore_point_count}")
         print(f"- Total Size of Restore Points: {total_restore_point_size_readable}")
+        if server_name:
+            print(f"- Backup Server: {server_name}")
+        else:
+            log_debug("Backup Server: not available (see above for reason)")
         if repo_name:
             print(f"- Backup Repository: {repo_name}")
+        else:
+            log_debug("Backup Repository: not available (see above for reason)")
         if job_name:
             print(f"- Backup Job: {job_name}")
-        if job_last_state:
-            print(f"- Job Last State: {job_last_state}")
+        else:
+            log_debug("Backup Job: not available (see above for reason)")
+        if job_status:
+            print(f"- Job Status: {job_status}")
+        else:
+            log_debug("Job Status: not available (see above for reason)")
         if vm_uid:
             print(f"- Restore Points Consistent: {consistent_count}")
             print(f"- Restore Points Inconsistent: {inconsistent_count}")
             if oldest_rp:
                 print(f"- Oldest Restore Point: {oldest_rp}")
+            else:
+                log_debug("Oldest Restore Point: not available from API response")
             if newest_rp:
                 print(f"- Newest Restore Point: {newest_rp}")
+            else:
+                log_debug("Newest Restore Point: not available from API response")
 
     except requests.exceptions.RequestException as e:
         print("KO: API call failed.")
