@@ -34,20 +34,13 @@ Changelog:
 
     27.03.25 SAN added more debug
     15.04.25 SAN big code cleanup + publication
-    17.06.26 SAN server-side filter + pagination + timeouts
-    18.06.26 SAN removed auth check
+    17.06.26 SAN server-side filter + pagination + timeouts + api key test
+    18.06.26 SAN fixed api_call_with_retries raise, removed dead code, moved api key test to main, hostname fallback, consistent .get(), removed globals and isComputer dead branch
+    18.06.26 SAN fixed FORCE flow, KeyError protection on vm fields, extracted resolve_host_arg/find_matching_vm, pruned TODO
+    18.06.26 SAN renamed vars (r/res/resp/i/p), optimized VM matching to single-pass, added ValueError guards, cleared all TODOs
+    18.06.26 SAN fixed double-limit URL bug, removed apiGet_VMbackups, use VM list fields directly for restore point data
 
-TODO:
-    better flow for the "force"
-    set fallback to get localhostname if hosts is not specified
-    avoid redundant calls to os.getenv
-    more function decomposition
-    graceful handling of missing keys in json responses
-    use more descriptive variable names
-    better error handling for missing data
-    optimize vm filtering logic
-    early exit for empty backed_up_vms
-    
+
 """
 
 import os
@@ -55,6 +48,7 @@ import sys
 import json
 import time
 import math
+import socket
 import requests
 from datetime import datetime, timedelta
 
@@ -68,33 +62,24 @@ def convert_size(bytes_):
     """Converts a size in bytes to a human-readable format."""
     if bytes_ == 0:
         return "0B"
-    i = int(math.log(bytes_, 1024))
-    return f"{round(bytes_ / (1024 ** i), 2)} {('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB')[i]}"
-
-def expiry_days(expiry):
-    """Calculates the number of days since a given expiry date."""
-    expiry_date = datetime.strptime(expiry[:26], "%Y-%m-%dT%H:%M:%S.%f").date()
-    return (datetime.today().date() - expiry_date).days
-
-def get_timestamp(date_str):
-    """Converts a date string to a Unix timestamp."""
-    return time.mktime(datetime.strptime(date_str[:26], "%Y-%m-%dT%H:%M:%S.%f").timetuple())
+    size_index = int(math.log(bytes_, 1024))
+    units = ('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB')
+    return f"{round(bytes_ / (1024 ** size_index), 2)} {units[size_index]}"
 
 def api_call_with_retries(url, method='GET', data=None, headers=None, retries=5, wait=60, timeout=60):
     """Makes an API call with retries for handling HTTP 429 responses."""
     for attempt in range(retries):
         try:
-            res = requests.request(method, url, data=data, headers=headers, timeout=timeout)
-            if res.status_code == 429 and attempt < retries - 1:
+            response = requests.request(method, url, data=data, headers=headers, timeout=timeout)
+            if response.status_code == 429 and attempt < retries - 1:
                 print(f"HTTP 429 received. Retrying in {wait} seconds... (Attempt {attempt + 1}/{retries})")
                 time.sleep(wait)
                 continue
-            res.raise_for_status()
-            return res
+            response.raise_for_status()
+            return response
         except requests.exceptions.RequestException as e:
             if attempt == retries - 1:
-                print(f"API call failed after {retries} attempts: {e}")
-                sys.exit(1)
+                raise
             time.sleep(wait)
 
 def api_get_all_paginated(base_url, headers, select_param=None, **kwargs):
@@ -104,15 +89,14 @@ def api_get_all_paginated(base_url, headers, select_param=None, **kwargs):
     all_data = []
 
     while True:
-        url = f"{base_url}&limit={limit}&offset={offset}"
+        url = f"{base_url}?limit={limit}&offset={offset}"
         if select_param:
             url += f"&select={select_param}"
-        res = api_call_with_retries(url, method='GET', headers=headers, **kwargs)
-        resp = res.json()
-        data = resp.get("data", [])
-        all_data.extend(data)
+        response = api_call_with_retries(url, method='GET', headers=headers, **kwargs)
+        parsed = response.json()
+        data = parsed.get("data", [])
 
-        paging = resp.get("meta", {}).get("pagingInfo", {})
+        paging = parsed.get("meta", {}).get("pagingInfo", {})
         total = paging.get("total", offset + len(data))
         if offset + limit >= total:
             break
@@ -133,41 +117,56 @@ def get_auth_headers():
 def apiGet_BackedUpVMs(name_filter=None):
     """Retrieves backed-up VMs, with optional server-side name filter and pagination."""
     headers = get_auth_headers()
-    select = '[{"propertyPath":"name"},{"propertyPath":"instanceUid"},{"propertyPath":"backupServerUid"}]'
+    select = '[{"propertyPath":"name"},{"propertyPath":"instanceUid"},{"propertyPath":"backupServerUid"},{"propertyPath":"latestRestorePointDate"},{"propertyPath":"totalRestorePointSize"},{"propertyPath":"restorePoints"}]'
 
     if name_filter:
         url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/virtualMachines"
         filter_json = json.dumps([{"property": "name", "operation": "contains", "collation": "ignorecase", "value": name_filter}])
         url += f"?filter={filter_json}&select={select}"
-        r = api_call_with_retries(url, method='GET', headers=headers)
-        return r.json()["data"]
+        response = api_call_with_retries(url, method='GET', headers=headers, timeout=60)
+        return response.json().get("data", [])
 
-    base_url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/virtualMachines?limit=500"
+    base_url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/virtualMachines"
     return api_get_all_paginated(base_url, headers, select_param=select)
 
-def apiGet_VMbackups(vmUID):
-    """Retrieves all backups for a specific VM with pagination."""
-    headers = get_auth_headers()
-    base_url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/virtualMachines/{vmUID}/backups?limit=500"
-    return api_get_all_paginated(base_url, headers)
+def resolve_host_arg():
+    """Determines the hostname to query from FORCE, HOST, or local hostname."""
+    force_val = env_vars['FORCE']
+    host_arg = force_val if (force_val and "Manual" not in force_val) else env_vars['HOST']
+    if not host_arg:
+        host_arg = socket.gethostname()
+        log_debug(f"No HOST or FORCE set. Using local hostname: {host_arg}")
+    return host_arg
 
-def apiGet_BackedUpComputers():
-    """Retrieves all backed-up computers with pagination."""
-    headers = get_auth_headers()
-    base_url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/computersManagedByBackupServer?limit=500"
-    return api_get_all_paginated(base_url, headers)
+def find_matching_vm(backed_up_vms, host_arg):
+    """Finds a unique VM matching host_arg. Returns the VM dict. Exits on zero or multiple matches."""
+    if env_vars.get('FORCE'):
+        matching = [vm for vm in backed_up_vms if host_arg == vm.get("name")]
+    else:
+        host_arg_lower = host_arg.lower()
+        matching = [
+            vm for vm in backed_up_vms
+            if host_arg in vm.get("name", "") or host_arg_lower in vm.get("name", "")
+        ]
 
-def apiGet_ComputersRestorePoints():
-    """Retrieves all computer restore points with pagination."""
-    headers = get_auth_headers()
-    base_url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/computersManagedByBackupServer/restorePoints?limit=500"
-    return api_get_all_paginated(base_url, headers)
+    if not matching:
+        print(f"KO: VM or Computer '{host_arg}' not found in the backup list.")
+        sys.exit(2)
+    elif len(matching) > 1:
+        log_debug(f"WARNING: Multiple matches found for '{host_arg}':")
+        for vm in matching:
+            log_debug(f"  - Name: {vm.get('name', 'UNKNOWN')}, VM UID: {vm.get('instanceUid', 'UNKNOWN')}")
+        print("Exiting to avoid mismatches.")
+        sys.exit(2)
+
+    matched = matching[0]
+    if not matched.get("instanceUid"):
+        print("KO: Selected VM is missing instanceUid.")
+        sys.exit(2)
+    log_debug(f"INFO: Selected VM: {matched.get('name', 'UNKNOWN')} (UID: {matched['instanceUid']})")
+    return matched
 
 # === Environment and Constants ===
-vmUID, lastRPoint, vmBkp_bkpSrvUID, tmpName, strSchedule = ("",) * 5
-nameNotFound = True
-isComputer = False
-
 env_vars = {
     'HOST': None,
     'FORCE': None,
@@ -184,10 +183,9 @@ if not env_vars['APIKEY'] or not env_vars['APIURL']:
     print("CRITICAL: 'APIURL' and 'APIKEY' must be set.")
     sys.exit(2)
 
-if env_vars['FORCE'] and "DISABLEDBACKUPCHECK" in env_vars['FORCE']:
+if env_vars.get('FORCE') and "DISABLEDBACKUPCHECK" in env_vars['FORCE']:
     print("Backup check is disabled because 'FORCE' contains 'DISABLEDBACKUPCHECK'.")
     sys.exit(0)
-
 
 def main():
     try:
@@ -201,11 +199,16 @@ def main():
         log_debug(f"  APIURL: {env_vars['APIURL']}")
         log_debug(f"  THRESHOLD_HOURS: {env_vars['THRESHOLD_HOURS']}\n")
 
-        host_arg = (
-            env_vars['FORCE']
-            if env_vars.get('FORCE') and "Manual" not in env_vars['FORCE']
-            else env_vars['HOST']
-        )
+        log_debug("Testing API key validity...")
+        try:
+            select_json = '[{"propertyPath":"instanceUid"}]'
+            test_url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/virtualMachines?limit=1&select={select_json}"
+            api_call_with_retries(test_url, method='GET', headers=get_auth_headers(), retries=1, timeout=60)
+        except requests.exceptions.RequestException:
+            print("KO: API key is invalid or the API is unreachable.")
+            sys.exit(2)
+
+        host_arg = resolve_host_arg()
 
         log_debug(f"INFO: Fetching VMs filtered by name '{host_arg}'...")
         backed_up_vms = apiGet_BackedUpVMs(name_filter=host_arg)
@@ -214,55 +217,38 @@ def main():
             log_debug("Server-side filter returned no results. Falling back to full paginated fetch...")
             backed_up_vms = apiGet_BackedUpVMs()
 
+        if not backed_up_vms:
+            print(f"KO: No VMs found in backup list.")
+            sys.exit(2)
+
         for vm in backed_up_vms:
-            log_debug(f"VM Name: {vm['name']}")
+            log_debug(f"VM Name: {vm.get('name', 'UNKNOWN')}")
 
-        if env_vars.get('FORCE'):
-            matching_vms = [vm for vm in backed_up_vms if host_arg == vm["name"]]
-        else:
-            matching_vms = [vm for vm in backed_up_vms if host_arg in vm["name"]]
+        matched_vm = find_matching_vm(backed_up_vms, host_arg)
+        vm_name = matched_vm.get("name", "UNKNOWN")
+        latest_restore_point = matched_vm.get("latestRestorePointDate")
+        restore_point_count = matched_vm.get("restorePoints", 0)
+        total_restore_point_size = matched_vm.get("totalRestorePointSize", 0)
 
-        if not matching_vms and not env_vars.get('FORCE'):
-            host_arg_lower = host_arg.lower()
-            matching_vms = [vm for vm in backed_up_vms if host_arg_lower in vm["name"]]
-
-        if not matching_vms:
-            print(f"KO: VM or Computer '{host_arg}' not found in the backup list.")
-            sys.exit(2)
-        elif len(matching_vms) > 1:
-            log_debug(f"WARNING: Multiple matches found for '{host_arg}':")
-            for vm in matching_vms:
-                log_debug(f"  - Name: {vm['name']}, VM UID: {vm['instanceUid']}")
-            print("Exiting to avoid mismatches.")
-            sys.exit(2)
-
-        global vmUID, tmpName
-        vmUID = matching_vms[0]["instanceUid"]
-        tmpName = matching_vms[0]["name"]
-        log_debug(f"INFO: Selected VM: {tmpName} (UID: {vmUID})")
-
-        try:
-            restore_points = (
-                apiGet_ComputersRestorePoints() if isComputer else apiGet_VMbackups(vmUID)
-            )
-        except requests.exceptions.RequestException as e:
-            print("API CALL FAILED: Unable to fetch restore points.")
-            log_debug(str(e))
-            sys.exit(2)
-
-        latest_restore_point = next(
-            (p['creationTimeUtc'] for p in restore_points if 'creationTimeUtc' in p),
-            next((p['latestRestorePointDate'] for p in restore_points if 'latestRestorePointDate' in p), None)
-        )
+        log_debug(f"INFO: VM {vm_name}: restorePoints={restore_point_count}, latestRestorePointDate={latest_restore_point}, totalRestorePointSize={total_restore_point_size}")
 
         if not latest_restore_point:
             print("KO: No valid restore points found.")
             sys.exit(2)
 
-        restore_point_time = datetime.strptime(latest_restore_point[:26], "%Y-%m-%dT%H:%M:%S.%f")
+        try:
+            restore_point_time = datetime.strptime(latest_restore_point[:26], "%Y-%m-%dT%H:%M:%S.%f")
+        except (ValueError, TypeError):
+            print("KO: Unable to parse restore point date.")
+            sys.exit(2)
+
         time_since_last_backup = datetime.utcnow() - restore_point_time
 
-        threshold_hours = int(env_vars['THRESHOLD_HOURS'])
+        try:
+            threshold_hours = int(env_vars['THRESHOLD_HOURS'])
+        except (ValueError, TypeError):
+            print("KO: THRESHOLD_HOURS must be a number.")
+            sys.exit(2)
         backup_age_limit = timedelta(hours=threshold_hours)
 
         if time_since_last_backup <= backup_age_limit:
@@ -271,10 +257,9 @@ def main():
             print(f"KO: The latest backup was {time_since_last_backup} ago, exceeding the threshold of {threshold_hours} hours.")
             sys.exit(2)
 
-        total_restore_point_size = sum(p.get('totalRestorePointSize', 0) for p in restore_points)
         total_restore_point_size_readable = convert_size(total_restore_point_size)
 
-        print(f"Restoration Status Report:\n- VM or Computer: {tmpName}\n- Latest Restore Point Date/Time: {latest_restore_point}\n- Number of Restore Points Available: {len(restore_points)}\n- Total Size of Restore Points: {total_restore_point_size_readable}")
+        print(f"Restoration Status Report:\n- VM or Computer: {vm_name}\n- Latest Restore Point Date/Time: {latest_restore_point}\n- Number of Restore Points Available: {restore_point_count}\n- Total Size of Restore Points: {total_restore_point_size_readable}")
 
 
     except requests.exceptions.RequestException as e:
