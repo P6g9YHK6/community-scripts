@@ -41,17 +41,17 @@ Changelog:
 
     27.03.25 SAN added more debug
     15.04.25 SAN big code cleanup + publication
-    17.06.26 SAN server-side filter + pagination + timeouts + api key test
-    18.06.26 SAN fixed api_call_with_retries raise, removed dead code, moved api key test to main, hostname fallback, consistent .get(), removed globals and isComputer dead branch
-    18.06.26 SAN fixed FORCE flow, KeyError protection on vm fields, extracted resolve_host_arg/find_matching_vm, pruned TODO
-    18.06.26 SAN renamed vars (r/res/resp/i/p), optimized VM matching to single-pass, added ValueError guards, cleared all TODOs
-    18.06.26 SAN fixed double-limit URL bug, removed apiGet_VMbackups, use VM list fields directly for restore point data
-    18.06.26 SAN replaced /about API key test with VM endpoint, fixed f-string backslash bug
-    18.06.26 SAN fixed find_matching_vm exact-match logic when FORCE contains "Manual"
-    18.06.26 SAN replaced deprecated datetime.utcnow() with datetime.now(timezone.utc)
-    18.06.26 SAN item-4 per-restore-point breakdown (backupRestorePoints endpoint), item-13 job last session state, item-19 expand parameter, enriched Restoration Status Report
-    18.06.26 SAN added WARNING_HOURS threshold, 4-level exit codes (0=OK, 1=WARNING, 2=CRITICAL, 3=ERROR)
-    18.06.26 SAN removed malware state, removed dead job detail code, standardized function naming to snake_case, narrowed exceptions
+     17.06.26 SAN server-side filter + pagination + timeouts + api key test
+     18.06.26 SAN fixed api_call_with_retries raise, removed dead code, moved api key test to main, hostname fallback, consistent .get(), removed globals and isComputer dead branch
+     18.06.26 SAN fixed FORCE flow, KeyError protection on vm fields, extracted resolve_host_arg/find_matching_vm, pruned TODO
+     18.06.26 SAN renamed vars (r/res/resp/i/p), optimized VM matching to single-pass, added ValueError guards, cleared all TODOs
+     18.06.26 SAN fixed double-limit URL bug, removed apiGet_VMbackups, use VM list fields directly for restore point data
+     18.06.26 SAN replaced /about API key test with VM endpoint, fixed f-string backslash bug
+     18.06.26 SAN fixed find_matching_vm exact-match logic when FORCE contains "Manual"
+     18.06.26 SAN replaced deprecated datetime.utcnow() with datetime.now(timezone.utc)
+     18.06.26 SAN item-4 per-restore-point breakdown (backupRestorePoints endpoint), item-13 job last session state, item-19 expand parameter, enriched Restoration Status Report
+     18.06.26 SAN added WARNING_HOURS threshold, 4-level exit codes (0=OK, 1=WARNING, 2=CRITICAL, 3=ERROR)
+     18.06.26 SAN removed malware state, removed dead job detail code, standardized function naming to snake_case, narrowed exceptions
 
 """
 
@@ -139,7 +139,7 @@ def get_auth_headers():
 def api_get_backed_up_vms(name_filter=None, expand=None):
     """Retrieves backed-up VMs, with optional server-side name filter and pagination."""
     headers = get_auth_headers()
-    select = '[{"propertyPath":"name"},{"propertyPath":"instanceUid"},{"propertyPath":"backupServerUid"},{"propertyPath":"latestRestorePointDate"},{"propertyPath":"totalRestorePointSize"},{"propertyPath":"restorePoints"},{"propertyPath":"jobUid"},{"propertyPath":"immutable"}]'
+    select = '[{"propertyPath":"name"},{"propertyPath":"instanceUid"},{"propertyPath":"backupServerUid"},{"propertyPath":"latestRestorePointDate"},{"propertyPath":"totalRestorePointSize"},{"propertyPath":"restorePoints"},{"propertyPath":"jobUid"},{"propertyPath":"immutable"},{"propertyPath":"repositoryUid"}]'
 
     if name_filter:
         url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/virtualMachines"
@@ -159,6 +159,26 @@ def api_get_vm_backup_restore_points(vm_uid):
     headers = get_auth_headers()
     base_url = f"{env_vars['APIURL']}/api/v3/protectedWorkloads/virtualMachines/{vm_uid}/backupRestorePoints"
     return api_get_all_paginated(base_url, headers, timeout=15)
+
+def api_get_backup_repo(srv_uid, repo_uid):
+    """Fetches a specific backup repository by server UID and repository UID."""
+    headers = get_auth_headers()
+    url = f"{env_vars['APIURL']}/api/v3/infrastructure/backupServers/{srv_uid}/repositories/{repo_uid}"
+    response = api_call_with_retries(url, method='GET', headers=headers)
+    return response.json()
+
+def api_get_job_infos(job_uid):
+    """Fetches job information by job UID."""
+    headers = get_auth_headers()
+    url = f"{env_vars['APIURL']}/api/v3/infrastructure/backupServers/jobs/{job_uid}"
+    response = api_call_with_retries(url, method='GET', headers=headers)
+    return response.json()
+
+def api_get_all_repos():
+    """Fetches all backup repositories across all backup servers with pagination."""
+    headers = get_auth_headers()
+    base_url = f"{env_vars['APIURL']}/api/v3/infrastructure/backupServers/repositories"
+    return api_get_all_paginated(base_url, headers)
 
 def resolve_host_arg():
     """Determines the hostname to query from FORCE, HOST, or local hostname."""
@@ -311,6 +331,30 @@ def main():
 
         total_restore_point_size_readable = convert_size(total_restore_point_size)
 
+        backup_server_uid = matched_vm.get("backupServerUid")
+        job_uid = matched_vm.get("jobUid")
+        repo_name = None
+        job_name = None
+        job_last_state = None
+
+        if backup_server_uid:
+            repo_uid = matched_vm.get("repositoryUid")
+            if repo_uid:
+                try:
+                    repo_data = api_get_backup_repo(backup_server_uid, repo_uid)
+                    repo_name = repo_data.get("data", {}).get("name")
+                except (ValueError, requests.exceptions.RequestException) as e:
+                    log_debug(f"Failed to fetch repo info: {e}")
+
+        if job_uid:
+            try:
+                job_data = api_get_job_infos(job_uid)
+                job_info = job_data.get("data", {})
+                job_name = job_info.get("name")
+                job_last_state = job_info.get("lastState")
+            except (ValueError, requests.exceptions.RequestException) as e:
+                log_debug(f"Failed to fetch job info: {e}")
+
         # Enrich with per-restore-point breakdown (Item 4)
         consistent_count = 0
         inconsistent_count = 0
@@ -339,6 +383,12 @@ def main():
         print(f"- Latest Restore Point Date/Time: {latest_restore_point}")
         print(f"- Number of Restore Points Available: {restore_point_count}")
         print(f"- Total Size of Restore Points: {total_restore_point_size_readable}")
+        if repo_name:
+            print(f"- Backup Repository: {repo_name}")
+        if job_name:
+            print(f"- Backup Job: {job_name}")
+        if job_last_state:
+            print(f"- Job Last State: {job_last_state}")
         if vm_uid:
             print(f"- Restore Points Consistent: {consistent_count}")
             print(f"- Restore Points Inconsistent: {inconsistent_count}")
