@@ -34,7 +34,8 @@ Changelog:
 
     27.03.25 SAN added more debug
     15.04.25 SAN big code cleanup + publication
-    17.06.26 SAN server-side filter + pagination + timeouts + api key test
+    17.06.26 SAN server-side filter + pagination + timeouts
+    18.06.26 SAN removed auth check
 
 TODO:
     better flow for the "force"
